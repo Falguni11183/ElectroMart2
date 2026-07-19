@@ -1,0 +1,257 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>My Orders</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+            --em-bg: #0b1120;
+            --em-surface: #141b2e;
+            --em-surface-2: #1b2338;
+            --em-cyan: #00e0c6;
+            --em-amber: #ffb627;
+            --em-text: #eef2f8;
+            --em-muted: #94a3b8;
+            --em-border: rgba(238, 242, 248, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--em-bg) !important;
+            color: var(--em-text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        h2, h4, h5 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        h2.mb-4 {
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2.mb-4::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--em-cyan), var(--em-amber));
+            border-radius: 3px;
+            margin-top: 0.7rem;
+        }
+
+        /* Order cards */
+
+        .card {
+            background-color: var(--em-surface);
+            border: 1px solid var(--em-border);
+            border-radius: 16px;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 224, 198, 0.35);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-body h4 {
+            font-weight: 700;
+            color: var(--em-text);
+        }
+
+        .card-body p {
+            color: var(--em-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .card-body p strong {
+            color: var(--em-text);
+        }
+
+        .card-body h5 {
+            font-weight: 600;
+            color: var(--em-text);
+            font-size: 1rem;
+        }
+
+        hr {
+            border-color: var(--em-border);
+            opacity: 1;
+        }
+
+        /* Progress bar */
+
+        .progress {
+            background-color: var(--em-surface-2);
+            border-radius: 8px;
+            height: 1.5rem;
+        }
+
+        .progress-bar {
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .progress-bar.bg-warning {
+            background-color: var(--em-amber) !important;
+            color: #3a2600;
+        }
+
+        .progress-bar.bg-info {
+            background: linear-gradient(90deg, var(--em-cyan), #33c9b3) !important;
+            color: #052923;
+        }
+
+        .progress-bar.bg-primary {
+            background: linear-gradient(90deg, #7f77dd, #534ab7) !important;
+            color: #ffffff;
+        }
+
+        .progress-bar.bg-success {
+            background: linear-gradient(90deg, var(--em-cyan), #00b8a3) !important;
+            color: #052923;
+        }
+
+        /* Status badge */
+
+        .badge.bg-dark {
+            background-color: var(--em-surface-2) !important;
+            border: 1px solid var(--em-border);
+            color: var(--em-text);
+            font-weight: 500;
+        }
+
+        /* Empty state */
+
+        .alert-info {
+            background-color: rgba(0, 224, 198, 0.08);
+            border: 1px solid rgba(0, 224, 198, 0.3);
+            color: var(--em-cyan);
+            border-radius: 10px;
+        }
+
+        /* Continue shopping */
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--em-cyan), #00b8a3);
+            border: none;
+            color: #052923;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 0.6rem 1.6rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0, 224, 198, 0.3);
+            color: #052923;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">📦 My Orders</h2>
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+
+                <h4>Order #{{ order.id }}</h4>
+
+                <p><strong>Total:</strong> ₹{{ order.total_amount }}</p>
+
+                <p><strong>Payment:</strong> {{ order.payment_method }}</p>
+
+                <p><strong>Date:</strong> {{ order.order_date }}</p>
+
+                <hr>
+
+                <h5>Order Status</h5>
+
+                {% if order.status == "Pending" %}
+
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-warning" style="width:25%">
+                        Pending
+                    </div>
+                </div>
+
+                {% elif order.status == "Packed" %}
+
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-info" style="width:50%">
+                        Packed
+                    </div>
+                </div>
+
+                {% elif order.status == "Shipped" %}
+
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-primary" style="width:75%">
+                        Shipped
+                    </div>
+                </div>
+
+                {% elif order.status == "Delivered" %}
+
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-success" style="width:100%">
+                        Delivered
+                    </div>
+                </div>
+
+                {% endif %}
+
+                <span class="badge bg-dark">
+                    Current Status : {{ order.status }}
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="alert alert-info">
+            No Orders Yet.
+        </div>
+
+    {% endif %}
+
+    <a href="{% url 'products' %}" class="btn btn-primary">
+        Continue Shopping
+    </a>
+
+</div>
+
+</body>
+</html>

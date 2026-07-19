@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Products</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #0a0f1e;
+        }
+
+        .container h2 {
+            color: #f8fafc;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .btn-success {
+            background: rgba(45, 212, 191, 0.15);
+            border: none;
+            color: #2dd4bf;
+            border-radius: 24px;
+            padding: 8px 18px;
+            font-weight: 500;
+        }
+
+        .btn-success:hover {
+            background: rgba(45, 212, 191, 0.25);
+            color: #2dd4bf;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            border-radius: 24px;
+            padding: 8px 18px;
+        }
+
+        .btn-secondary:hover {
+            background: #1e293b;
+            color: #fff;
+            border-color: #334155;
+        }
+
+        .table {
+            background: #0f1729;
+            color: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table thead.table-dark th {
+            background: #0f1729;
+            color: #94a3b8;
+            border-color: #1e293b;
+            font-size: 0.78rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .table td, .table th {
+            border-color: #1e293b;
+            vertical-align: middle;
+        }
+
+        .table-hover > tbody > tr:hover > * {
+            background-color: #141d33;
+            color: #e2e8f0;
+        }
+
+        .table img {
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+            padding: 2px;
+            background: #1e293b;
+        }
+
+        .btn-warning {
+            background: rgba(245, 183, 49, 0.15);
+            border: none;
+            color: #f5b731;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .btn-warning:hover {
+            background: rgba(245, 183, 49, 0.25);
+            color: #f5b731;
+        }
+
+        .btn-danger {
+            background: rgba(244, 63, 94, 0.15);
+            border: none;
+            color: #fb7185;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .btn-danger:hover {
+            background: rgba(244, 63, 94, 0.25);
+            color: #fb7185;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between mb-4">
+
+        <h2>🛍 Manage Products</h2>
+
+        <div>
+
+            <a href="{% url 'add_product' %}" class="btn btn-success">
+                + Add Product
+            </a>
+
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+                Dashboard
+            </a>
+            
+
+        </div>
+
+    </div>
+
+<table class="table table-bordered table-hover">
+   
+
+<thead class="table-dark">
+
+<tr>
+
+<th>ID</th>
+<th>Image</th>
+<th>Name</th>
+<th>Category</th>
+<th>Price</th>
+<th>Stock</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for product in products %}
+
+<tr>
+
+<td>{{ product.id }}</td>
+
+<td>
+
+<img src="{{ product.image }}"
+width="70">
+
+</td>
+
+<td>{{ product.name }}</td>
+
+<td>{{ product.category }}</td>
+
+<td>₹{{ product.price }}</td>
+
+<td>{{ product.stock }}</td>
+
+<td>
+
+<a href="{% url 'edit_product' product.id %}"
+class="btn btn-warning btn-sm">
+
+Edit
+
+</a>
+
+<a href="{% url 'delete_product' product.id %}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Are you sure you want to delete this product?')">
+
+Delete
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</body>
+</html>
